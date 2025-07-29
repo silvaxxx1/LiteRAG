@@ -1,0 +1,127 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VSCode settings
+.vscode/
+
+# PyCharm
+.idea/
+
+# Logs and databases
+*.log
+*.sqlite3
+*.db
+
+# Data files (you might want to version control some, so adjust as needed)
+src/assets/*.csv
+src/assets/*.tsv
+src/assets/*.json
+src/assets/*.pickle
+src/assets/*.pkl
+src/assets/*.parquet
+
+# Model and embedding binaries (often large, better excluded)
+src/assets/*.ckpt
+src/assets/*.pt
+src/assets/*.pth
+src/assets/*.bin
+src/assets/*.gguf
+
+# FAISS index files
+src/assets/*.index
+src/assets/*.faiss
+
+# Temporary files
+*.tmp
+*.temp
+
+# Cache directories
+.cache/
+__huggingface__/
+huggingface/
+runs/
+.mlflow/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Python virtual environment folders (if inside project)
+.env/
+.venv/
+
+# Misc
+*.bak
+*.swp
+*~
+
+# Ignore Gradio cache / temp (if any)
+gradio/
+
+# Ignore TinyLlama local build artifacts (if any)
+tinyllama-1.1b-chat-v1.0.Q5_K_M.gguf
+
