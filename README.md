@@ -1,150 +1,141 @@
-# LiteRAG : Local RAG from Scratch
+# ⚡ LiteRAG — Local RAG Pipeline, Production-Ready from Your Own Hardware
 
-A lightweight, modular **Retrieval-Augmented Generation (RAG)** pipeline designed to run efficiently on local machines — especially CPU-bound environments — without relying on heavy frameworks or cloud services.
-
-This project builds a functional backbone for RAG by combining:
-
-- Document loading and chunking
-- Vector embedding with customizable models
-- FAISS-based similarity search
-- Local LLM inference powered by [TinyLlama](https://github.com/johnsmith0031/tiny-llama) using `llama.cpp`
-- Optional interactive Gradio UI (coming soon)
+> 🧠 **Based on:** [HandsOnLLMs (by silvaxxx1)](https://github.com/silvaxxx1/HandsOnLLMs)
+> 🎯 **Goal:** Transform the original Local RAG prototype into a **scalable, user-ready, robust RAG pipeline** — no cloud, no hassle, no expertise required.
 
 ---
 
-## Why Build Your Own Local RAG?
+## 🔄 From HandsOnLLMs → LiteRAG
 
-- **Full control:** Understand and customize every stage of the pipeline  
-- **Resource efficient:** Optimized for CPU and modest hardware (e.g., laptops, low-end servers)  
-- **No vendor lock-in:** Run fully offline without cloud costs or dependencies  
-- **Extensible:** Swap embedding models, chunking strategies, or LLMs as needed  
+This project is **not a fork of someone else's idea** — it's a **continuation and evolution of my own work** from the [HandsOnLLMs](https://github.com/silvaxxx1/HandsOnLLMs) repo.
+
+In that repo, the `Local RAG/` subproject introduced a lightweight RAG system for local experimentation. **LiteRAG now productizes and scales that idea** by:
+
+* Adding a full GUI for end users (Gradio / Streamlit)
+* Creating auto-installers and Docker support
+* Improving modularity and configurability
+* Optimizing for performance on local hardware (CPU and GPU)
+* Preserving CLI pipelines for developers and contributors
 
 ---
 
-## Project Structure
+## 🧭 What Is LiteRAG?
 
+A **modular Retrieval-Augmented Generation (RAG)** pipeline that runs entirely offline — designed for **scalability, reliability, and ease of use**.
+
+* 🧩 Modular architecture (easy to swap embedding or LLMs)
+* 💻 100% local execution (no cloud, no vendor lock-in)
+* 🧠 Small but capable models (like TinyLlama) for real-time CPU inference
+* 📊 Efficient FAISS-based retrieval
+* 🖥️ Gradio UI for anyone to use — no code required
+
+---
+
+## 📦 Folder Structure
+
+```bash
+LiteRAG/
+├── app.py                   # Main GUI entrypoint (for end users)
+├── installer/               # Auto-start scripts for Windows, macOS, Linux
+├── Dockerfile               # Containerized setup
+├── models/                  # Local LLMs (GGUF)
+├── src/
+│   ├── assets/              # PDFs, chunked text, vector files
+│   ├── config/              # YAML configurations
+│   ├── data/                # Document loaders & chunkers
+│   ├── embedding/           # Embedding model logic
+│   ├── inference/           # Local LLM inference (llama.cpp, etc.)
+│   ├── retrieval/           # Vector search (FAISS)
+│   ├── utils/               # File I/O, logging, helpers
+│   └── rag_pipeline.py      # CLI pipeline for developers
+└── README.md
 ```
 
-Local-RAG/
-├── app.py                     # Gradio web UI (optional)
-├── README.md                  # This file
-└── src/
-├── assets/                # Raw PDFs, chunk CSVs, embeddings
-├── data/                  # Document loading & chunking logic
-├── embedding/             # Embedding models and storage
-├── inference/             # LLM loading and query handling
-├── rag\_pipline.py         # Modular CLI pipeline orchestrator
-├── retrieval/             # FAISS index and similarity search
-└── tinyllama-1.1b-chat-v1.0.Q5\_K\_M.gguf  # TinyLlama quantized model for local inference
-
-````
-
-+------------+      +------------+      +--------------+      +-----------+
-|  Upload &  | ---> |  Data      | ---> |  Embedding   | ---> |  Inference |
-|  Load PDF  |      |  Pipeline  |      |  Pipeline    |      |  (TinyLlama)|
-+------------+      +------------+      +--------------+      +-----------+
-                                       |                           |
-                                       v                           v
-                                 +--------------+          +----------------+
-                                 |  Chunked     |          |  Answers to    |
-                                 |  Text        |          |  User Queries  |
-                                 +--------------+          +----------------+
-
-
-
-
-###  Add your documents
-
-Place your PDF files inside `src/assets/` or provide a direct URL when running the pipeline.
-
-###  Run the pipeline via CLI
-
-You can run each stage individually or run the full pipeline sequentially.
-
-#### Example CLI commands:
-
-* **Run only the data pipeline (download, chunk):**
-
-  ```bash
-  python src/rag_pipline.py data \
-    --url http://example.com/file.pdf \
-    --save-path ./src/assets/raw.pdf \
-    --chunk-size 512 \
-    --show-stats
-  ```
-
-* **Run only embedding:**
-
-  ```bash
-  python src/rag_pipline.py embed \
-    --model-key sentence-transformers/all-MiniLM-L6-v2
-  ```
-
-* **Run only inference:**
-
-  ```bash
-  python src/rag_pipline.py inf --device cpu
-  ```
-
-* **Run the full pipeline:**
-
-  ```bash
-  python src/rag_pipline.py all \
-    --url http://example.com/file.pdf \
-    --save-path ./src/assets/raw.pdf \
-    --chunk-size 512 \
-    --show-stats \
-    --model-key sentence-transformers/all-MiniLM-L6-v2 \
-    --device cpu
-  ```
-
 ---
 
-## About TinyLlama and llama.cpp
+## 🖥️ How Users Interact (Simple, No Code)
 
-This project leverages [TinyLlama](https://github.com/johnsmith0031/tiny-llama), a lightweight quantized LLM model, loaded and queried locally through the [llama.cpp](https://github.com/ggerganov/llama.cpp) runtime. This combination enables fast, offline inference without a GPU — perfect for CPU-limited environments.
+End users don’t need to touch the terminal.
 
----
+> ✅ Just run one script:
 
-## Configuration & Optimization
-
-* **Chunk Size:** Adjust `--chunk-size` to balance chunk granularity and embedding/inference speed. Smaller chunks can improve retrieval relevance but increase processing time.
-* **Embedding Models:** Easily swap embedding models via `--model-key`. Use smaller, faster models for CPU environments or larger models if GPU available.
-* **Inference Device:** Use `--device cpu` to run on CPU or `--device cuda` if GPU and CUDA available.
-* **Chunk Stats:** Enable `--show-stats` to visualize chunk length distributions for data diagnostics.
-* **Caching:** Embeddings and chunks are saved in `src/assets/` to avoid redundant computation.
-
----
-
-## Interactive Web UI (Coming Soon)
-
-A user-friendly Gradio interface will allow uploading PDFs and querying directly from the browser with real-time response from the local RAG pipeline.
-
----
-
-## Future Improvements
-
-* Support multi-document ingestion and indexing
-* Enhanced chunking (semantic or topic-based)
-* More advanced caching and persistence layers
-* Additional embedding and LLM model support
-* Performance profiling and further optimization for very low-resource devices
-
----
-
-## License
-
-MIT License
-
----
-
-## Acknowledgments
-
-Inspired by open-source RAG research and implementations, thanks to the open-source community for embedding models, FAISS, llama.cpp, and TinyLlama.
-
----
-
-**Build your own RAG pipeline tailored for local environments — fully transparent, modular, and efficient.**
-Happy exploring! 🚀
-
+```bash
+bash installer/start.sh
 ```
+
+Then:
+
+* Upload your documents (PDF, TXT, etc.)
+* Ask questions in chat
+* All answers are generated **locally** using embedded knowledge from your own files
+
+---
+
+## ⚙️ How Developers Interact (Powerful, Modular CLI)
+
+All pipeline stages are still available for advanced users:
+
+```bash
+# Chunk & preprocess docs
+python src/rag_pipeline.py data --url http://example.com/file.pdf
+
+# Embed with a specific model
+python src/rag_pipeline.py embed --model-key sentence-transformers/all-MiniLM-L6-v2
+
+# Run TinyLlama inference
+python src/rag_pipeline.py inf --device cpu
+
+# Full end-to-end RAG pipeline
+python src/rag_pipeline.py all --url ... --chunk-size 512 --model-key ... --device cpu
+```
+
+> These CLI components are **preserved from the original HandsOnLLMs design**, now made more robust and configurable.
+
+---
+
+## 🔧 Tech Stack
+
+| Component     | Tool / Model                                    |
+| ------------- | ----------------------------------------------- |
+| Embeddings    | Sentence Transformers (MiniLM, BGE, Instructor) |
+| Vector Search | FAISS (default), easily swappable               |
+| LLM Inference | TinyLlama (GGUF) + llama.cpp                    |
+| Runtime       | `llama-cpp-python`, `transformers`, YAML-based  |
+| UI            | Gradio (or Streamlit, user-selectable)          |
+| Deployment    | Bash scripts, Docker, cross-platform support    |
+
+---
+
+## 📈 Roadmap
+
+| Status | Feature                                       |
+| ------ | --------------------------------------------- |
+| ✅      | Modular local pipeline (data, embedding, LLM) |
+| ✅      | Developer CLI preserved from HandsOnLLMs      |
+| ✅      | Quantized TinyLlama inference via llama.cpp   |
+| ✅      | Gradio-based GUI for end users                |
+| 🔜     | Windows/macOS GUI installers                  |
+| 🔜     | GPU support fallback                          |
+| 🔜     | Multi-format document support                 |
+| 🔜     | Vector DB backends: ChromaDB, Qdrant          |
+| 🔜     | Settings UI, Model/Embedding switcher         |
+
+---
+
+## 🙏 Credits & License
+
+* Original repo: [HandsOnLLMs](https://github.com/silvaxxx1/HandsOnLLMs)
+* License: MIT © 2025 [@silvaxxx1](https://github.com/silvaxxx1)
+* Thanks to the open-source community for tools like `sentence-transformers`, `FAISS`, `llama.cpp`, and `TinyLlama`.
+
+---
+
+## 💬 TL;DR
+
+**LiteRAG** = hands-on meets hands-off.
+
+* For developers: full control via CLI
+* For users: one-click document QA chat
+* For everyone: free, local, fast
+
+---
