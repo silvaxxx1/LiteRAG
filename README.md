@@ -1,141 +1,139 @@
-# ⚡ LiteRAG — Local RAG Pipeline, Production-Ready from Your Own Hardware
+# 🖥️ LiteRAG — Local RAG Desktop App, Production-Ready on Your Own Hardware
 
-> 🧠 **Based on:** [HandsOnLLMs (by silvaxxx1)](https://github.com/silvaxxx1/HandsOnLLMs)
-> 🎯 **Goal:** Transform the original Local RAG prototype into a **scalable, user-ready, robust RAG pipeline** — no cloud, no hassle, no expertise required.
-
----
-
-## 🔄 From HandsOnLLMs → LiteRAG
-
-This project is **not a fork of someone else's idea** — it's a **continuation and evolution of my own work** from the [HandsOnLLMs](https://github.com/silvaxxx1/HandsOnLLMs) repo.
-
-In that repo, the `Local RAG/` subproject introduced a lightweight RAG system for local experimentation. **LiteRAG now productizes and scales that idea** by:
-
-* Adding a full GUI for end users (Gradio / Streamlit)
-* Creating auto-installers and Docker support
-* Improving modularity and configurability
-* Optimizing for performance on local hardware (CPU and GPU)
-* Preserving CLI pipelines for developers and contributors
+> **Goal**: Transform the original Local RAG prototype from my HandsOnLLMs repo into a **scalable, user-ready desktop application** — running entirely offline, with a simple native UI for Linux PCs and laptops. No cloud. No hassle. No ML expertise required.
+> **Built for me**: I designed LiteRAG because I personally needed a **fast, private, production-ready RAG app** I could run on my own machines every day — and now I’m making it available for others who want the same.
 
 ---
 
-## 🧭 What Is LiteRAG?
+## 📝 Why I Built This
 
-A **modular Retrieval-Augmented Generation (RAG)** pipeline that runs entirely offline — designed for **scalability, reliability, and ease of use**.
+I work with a lot of private datasets — documents, research papers, code, notes — and I wanted a **single, reliable desktop app** that could:
 
-* 🧩 Modular architecture (easy to swap embedding or LLMs)
-* 💻 100% local execution (no cloud, no vendor lock-in)
-* 🧠 Small but capable models (like TinyLlama) for real-time CPU inference
-* 📊 Efficient FAISS-based retrieval
-* 🖥️ Gradio UI for anyone to use — no code required
+* Search my files semantically, not just by keyword.
+* Summarize and answer questions in natural language.
+* Run **completely offline** without risking data leaks.
+* Be **fast enough** to run on my laptop without a huge GPU.
+* Have a **clean, native UI** instead of a clunky browser tab.
+* Let me swap models or vector stores easily when I need to experiment.
+
+There was nothing out there that was **both personal and production-ready** — so I built LiteRAG **first for myself**.
+The result: my daily driver for research, work, and personal knowledge management. Now, it’s yours too.
 
 ---
 
-## 📦 Folder Structure
+## 🔄 From *HandsOnLLMs* → **LiteRAG**
+
+LiteRAG is **not a fork** of someone else’s work — it’s the evolution of my own HandsOnLLMs **Local RAG** subproject.
+
+* **Then**: CLI-only prototype for experimentation.
+* **Now**: A full **native desktop app** with a local backend, embedded vector DB, and GPU/CPU-optimized models.
+
+LiteRAG upgrades the original concept by:
+
+* Adding a **native PySide6 UI** for desktop users.
+* Running a **FastAPI backend** locally for RAG processing.
+* Embedding a **lightweight vector DB** (Qdrant or Chroma) — no FAISS installation headaches.
+* Optimizing for **real-time CPU & GPU inference**.
+* Providing **one-click installers** (`.AppImage` / `.deb`) for Linux.
+* Preserving **CLI pipelines** for developers.
+
+---
+
+## 🧩 What Is LiteRAG?
+
+A **modular Retrieval-Augmented Generation (RAG) desktop application** that runs entirely offline. Designed for **portability, reliability, and ease of use**.
+
+* 🔌 **Modular architecture** — swap embedding models or LLMs with config changes.
+* 🛡 **100% local execution** — no cloud, no vendor lock-in.
+* ⚡ **Small but capable models** — Mistral 7B, Gemma, TinyLlama (quantized) for real-time inference.
+* 📂 **Embedded vector DB** — Qdrant or Chroma for fast retrieval.
+* 🖥 **Native Linux UI** — PySide6 for smooth, non-web, OS-integrated experience.
+* 👤 **Personal-first design** — built to be my own daily driver before sharing with others.
+
+---
+
+## 📁 Folder Structure
 
 ```bash
 LiteRAG/
-├── app.py                   # Main GUI entrypoint (for end users)
-├── installer/               # Auto-start scripts for Windows, macOS, Linux
-├── Dockerfile               # Containerized setup
-├── models/                  # Local LLMs (GGUF)
-├── src/
-│   ├── assets/              # PDFs, chunked text, vector files
-│   ├── config/              # YAML configurations
-│   ├── data/                # Document loaders & chunkers
-│   ├── embedding/           # Embedding model logic
-│   ├── inference/           # Local LLM inference (llama.cpp, etc.)
-│   ├── retrieval/           # Vector search (FAISS)
-│   ├── utils/               # File I/O, logging, helpers
-│   └── rag_pipeline.py      # CLI pipeline for developers
+├── ui/                # PySide6 UI components
+├── backend/           # FastAPI RAG backend
+│   ├── embeddings/    # Embedding model logic
+│   ├── inference/     # llama.cpp, Ollama integration
+│   ├── retrieval/     # Qdrant/Chroma integration
+│   ├── utils/         # Parsing, chunking, logging
+│   └── config/        # YAML configs
+├── models/            # Local LLMs & embedding models
+├── installer/         # Auto-start scripts & packaging
+├── vector_store/      # Local Qdrant/Chroma data
+├── main.py            # App entry point
 └── README.md
 ```
 
 ---
 
-## 🖥️ How Users Interact (Simple, No Code)
+## 🎯 How Users Interact (No Terminal Needed)
 
-End users don’t need to touch the terminal.
+End users run LiteRAG like any other Linux app.
 
-> ✅ Just run one script:
-
-```bash
-bash installer/start.sh
-```
-
-Then:
-
-* Upload your documents (PDF, TXT, etc.)
-* Ask questions in chat
-* All answers are generated **locally** using embedded knowledge from your own files
+1. Download `.AppImage` or `.deb`.
+2. Double-click to launch.
+3. Drag & drop documents (PDF, TXT, DOCX) into the app.
+4. Ask questions in the chat window.
+5. Get answers **entirely offline** using your local models.
 
 ---
 
-## ⚙️ How Developers Interact (Powerful, Modular CLI)
+## 🛠 How Developers Interact (CLI Power Mode)
 
-All pipeline stages are still available for advanced users:
+CLI pipeline remains available for advanced control:
 
 ```bash
 # Chunk & preprocess docs
-python src/rag_pipeline.py data --url http://example.com/file.pdf
+python backend/rag_pipeline.py data --file mydoc.pdf
 
-# Embed with a specific model
-python src/rag_pipeline.py embed --model-key sentence-transformers/all-MiniLM-L6-v2
+# Embed with specific model
+python backend/rag_pipeline.py embed --model-key bge-small-en-v1.5
 
-# Run TinyLlama inference
-python src/rag_pipeline.py inf --device cpu
+# Run local inference
+python backend/rag_pipeline.py inf --device cpu
 
-# Full end-to-end RAG pipeline
-python src/rag_pipeline.py all --url ... --chunk-size 512 --model-key ... --device cpu
+# Full RAG
+python backend/rag_pipeline.py all --file mydoc.pdf --chunk-size 512 --model-key bge-small-en-v1.5 --device cpu
 ```
 
-> These CLI components are **preserved from the original HandsOnLLMs design**, now made more robust and configurable.
+---
+
+## 🧪 Tech Stack
+
+| Component       | Tool / Model                     |
+| --------------- | -------------------------------- |
+| **UI**          | PySide6 (Qt for Python)          |
+| **Backend**     | FastAPI (local server)           |
+| **Embeddings**  | BGE-small, MiniLM, Instructor-XL |
+| **Vector DB**   | Qdrant (embedded) / Chroma       |
+| **LLM Runtime** | llama.cpp / Ollama               |
+| **Doc Parsing** | pymupdf, unstructured            |
+| **Packaging**   | PyInstaller + AppImageKit        |
+| **Monitoring**  | (Optional) Prometheus + Grafana  |
 
 ---
 
-## 🔧 Tech Stack
+## 📜 Credits & License
 
-| Component     | Tool / Model                                    |
-| ------------- | ----------------------------------------------- |
-| Embeddings    | Sentence Transformers (MiniLM, BGE, Instructor) |
-| Vector Search | FAISS (default), easily swappable               |
-| LLM Inference | TinyLlama (GGUF) + llama.cpp                    |
-| Runtime       | `llama-cpp-python`, `transformers`, YAML-based  |
-| UI            | Gradio (or Streamlit, user-selectable)          |
-| Deployment    | Bash scripts, Docker, cross-platform support    |
+* Original repo: **HandsOnLLMs**
+* License: MIT © 2025 @silvaxxx1
+* Thanks to the open-source community: sentence-transformers, Qdrant, Chroma, llama.cpp, Mistral, Gemma.
 
 ---
 
-## 📈 Roadmap
+## 💡 TL;DR
 
-| Status | Feature                                       |
-| ------ | --------------------------------------------- |
-| ✅      | Modular local pipeline (data, embedding, LLM) |
-| ✅      | Developer CLI preserved from HandsOnLLMs      |
-| ✅      | Quantized TinyLlama inference via llama.cpp   |
-| ✅      | Gradio-based GUI for end users                |
-| 🔜     | Windows/macOS GUI installers                  |
-| 🔜     | GPU support fallback                          |
-| 🔜     | Multi-format document support                 |
-| 🔜     | Vector DB backends: ChromaDB, Qdrant          |
-| 🔜     | Settings UI, Model/Embedding switcher         |
+LiteRAG = **Local RAG, done right**.
+Built first for **me**, to be my **own daily driver**, and now released so others can enjoy a truly **offline, private, production-ready RAG**.
 
----
-
-## 🙏 Credits & License
-
-* Original repo: [HandsOnLLMs](https://github.com/silvaxxx1/HandsOnLLMs)
-* License: MIT © 2025 [@silvaxxx1](https://github.com/silvaxxx1)
-* Thanks to the open-source community for tools like `sentence-transformers`, `FAISS`, `llama.cpp`, and `TinyLlama`.
-
----
-
-## 💬 TL;DR
-
-**LiteRAG** = hands-on meets hands-off.
-
-* For developers: full control via CLI
-* For users: one-click document QA chat
-* For everyone: free, local, fast
+* For developers: **full CLI control**.
+* For end users: **one-click, offline document QA**.
+* For everyone: **fast, free, and private**.
 
 ---
