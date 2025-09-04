@@ -1,7 +1,27 @@
 # 🖥️ LiteRAG — Local RAG Desktop App, Production-Ready on Your Own Hardware
 
 > **Goal**: Transform the original Local RAG prototype from my HandsOnLLMs repo into a **scalable, user-ready desktop application** — running entirely offline, with a simple native UI for Linux PCs and laptops. No cloud. No hassle. No ML expertise required.
-> **Built for me**: I designed LiteRAG because I personally needed a **fast, private, production-ready RAG app** I could run on my own machines every day — and now I’m making it available for others who want the same.
+> **Built for me**: LiteRAG is designed to be a **fast, private, production-ready personal knowledge assistant** that can handle multiple document projects seamlessly.
+
+---
+
+## 🔄 LiteRAG Workflow
+
+**Visual Overview:** Drag & drop → Project → Vector DB → LLM → Answers.
+
+<p align="center">
+  <img src="literag.png" alt="Quantization Overview">
+</p>
+
+**How it works**:
+
+1. **Drag & Drop** → initialize a project or add documents.
+2. **SQLite** stores metadata and project info.
+3. **Text Extraction & Chunking** prepares files for embedding.
+4. **Embedding Generation** converts text into vectors.
+5. **Qdrant/Chroma** stores vectors per project for semantic search.
+6. **Local LLM** processes retrieved chunks and generates answers.
+7. **Delete Project** cleans all files, embeddings, and metadata.
 
 ---
 
@@ -9,46 +29,55 @@
 
 I work with a lot of private datasets — documents, research papers, code, notes — and I wanted a **single, reliable desktop app** that could:
 
-* Search my files semantically, not just by keyword.
+* Organize content into **separate projects** (e.g., Code, History, Math).
+* Allow users to **drag & drop files** to initialize new projects instantly.
+* Search files semantically, not just by keyword.
 * Summarize and answer questions in natural language.
-* Run **completely offline** without risking data leaks.
-* Be **fast enough** to run on my laptop without a huge GPU.
-* Have a **clean, native UI** instead of a clunky browser tab.
-* Let me swap models or vector stores easily when I need to experiment.
+* Run **completely offline**, without risking data leaks.
+* Be **lightweight and fast**, capable of running on laptops without a GPU.
+* Provide a **clean, native UI** instead of a clunky browser tab.
+* Let users **delete projects cleanly** or expand them anytime.
 
-There was nothing out there that was **both personal and production-ready** — so I built LiteRAG **first for myself**.
-The result: my daily driver for research, work, and personal knowledge management. Now, it’s yours too.
+LiteRAG started as my own daily driver and now provides a **production-ready RAG library experience** for everyone.
 
 ---
 
 ## 🔄 From *HandsOnLLMs* → **LiteRAG**
 
-LiteRAG is **not a fork** of someone else’s work — it’s the evolution of my own HandsOnLLMs **Local RAG** subproject.
+LiteRAG is **not a fork** — it’s the evolution of my HandsOnLLMs **Local RAG** prototype:
 
 * **Then**: CLI-only prototype for experimentation.
-* **Now**: A full **native desktop app** with a local backend, embedded vector DB, and GPU/CPU-optimized models.
+* **Now**: Full native desktop app with **project-based document management**, embedded vector DB, and GPU/CPU-optimized models.
 
-LiteRAG upgrades the original concept by:
+Key upgrades:
 
-* Adding a **native PySide6 UI** for desktop users.
-* Running a **FastAPI backend** locally for RAG processing.
-* Embedding a **lightweight vector DB** (Qdrant or Chroma) — no FAISS installation headaches.
-* Optimizing for **real-time CPU & GPU inference**.
-* Providing **one-click installers** (`.AppImage` / `.deb`) for Linux.
-* Preserving **CLI pipelines** for developers.
+* **Native PySide6 UI** for smooth desktop experience.
+* **FastAPI backend** running locally for RAG processing.
+* **Lightweight vector DB** (Qdrant or Chroma) with per-project collections.
+* **Real-time CPU & GPU inference**.
+* **One-click installers** (`.AppImage` / `.deb`) for Linux.
+* Full **CLI pipelines** for developers.
 
 ---
 
 ## 🧩 What Is LiteRAG?
 
-A **modular Retrieval-Augmented Generation (RAG) desktop application** that runs entirely offline. Designed for **portability, reliability, and ease of use**.
+LiteRAG is a **modular, offline Retrieval-Augmented Generation (RAG) desktop app**.
+It acts as a **personal knowledge library**, allowing users to:
+
+* 🔹 Create **multiple projects** for different subjects or datasets.
+* 🔹 Drag & drop documents to **initialize new projects instantly**.
+* 🔹 Expand projects by adding more documents at any time.
+* 🔹 Ask questions **per project** or globally across all projects.
+* 🔹 Delete projects cleanly — removing all associated files, embeddings, and metadata.
+
+Other features:
 
 * 🔌 **Modular architecture** — swap embedding models or LLMs with config changes.
 * 🛡 **100% local execution** — no cloud, no vendor lock-in.
 * ⚡ **Small but capable models** — Mistral 7B, Gemma, TinyLlama (quantized) for real-time inference.
 * 📂 **Embedded vector DB** — Qdrant or Chroma for fast retrieval.
-* 🖥 **Native Linux UI** — PySide6 for smooth, non-web, OS-integrated experience.
-* 👤 **Personal-first design** — built to be my own daily driver before sharing with others.
+* 👤 **Personal-first design** — built to be my own daily driver before sharing.
 
 ---
 
@@ -65,7 +94,8 @@ LiteRAG/
 │   └── config/        # YAML configs
 ├── models/            # Local LLMs & embedding models
 ├── installer/         # Auto-start scripts & packaging
-├── vector_store/      # Local Qdrant/Chroma data
+├── vector_store/      # Local Qdrant/Chroma data (per-project collections)
+├── projects/          # User projects with uploaded documents
 ├── main.py            # App entry point
 └── README.md
 ```
@@ -74,48 +104,60 @@ LiteRAG/
 
 ## 🎯 How Users Interact (No Terminal Needed)
 
-End users run LiteRAG like any other Linux app.
+1. Launch the app via `.AppImage` or `.deb`.
+2. Drag & drop a folder or documents to **create a new project**.
+3. Name the project and start uploading content.
+4. Click a project to **chat or search** within it.
+5. Add more documents to expand the project at any time.
+6. Delete projects to **remove all associated files and embeddings** instantly.
 
-1. Download `.AppImage` or `.deb`.
-2. Double-click to launch.
-3. Drag & drop documents (PDF, TXT, DOCX) into the app.
-4. Ask questions in the chat window.
-5. Get answers **entirely offline** using your local models.
+> LiteRAG makes managing multiple knowledge projects **as easy as dragging files**.
 
 ---
 
 ## 🛠 How Developers Interact (CLI Power Mode)
 
-CLI pipeline remains available for advanced control:
-
 ```bash
 # Chunk & preprocess docs
-python backend/rag_pipeline.py data --file mydoc.pdf
+python backend/rag_pipeline.py data --file mydoc.pdf --project-id 1
 
 # Embed with specific model
-python backend/rag_pipeline.py embed --model-key bge-small-en-v1.5
+python backend/rag_pipeline.py embed --model-key bge-small-en-v1.5 --project-id 1
 
 # Run local inference
-python backend/rag_pipeline.py inf --device cpu
+python backend/rag_pipeline.py inf --device cpu --project-id 1
 
-# Full RAG
-python backend/rag_pipeline.py all --file mydoc.pdf --chunk-size 512 --model-key bge-small-en-v1.5 --device cpu
+# Full RAG pipeline
+python backend/rag_pipeline.py all --file mydoc.pdf --chunk-size 512 --model-key bge-small-en-v1.5 --device cpu --project-id 1
 ```
 
 ---
 
 ## 🧪 Tech Stack
 
-| Component       | Tool / Model                     |
-| --------------- | -------------------------------- |
-| **UI**          | PySide6 (Qt for Python)          |
-| **Backend**     | FastAPI (local server)           |
-| **Embeddings**  | BGE-small, MiniLM, Instructor-XL |
-| **Vector DB**   | Qdrant (embedded) / Chroma       |
-| **LLM Runtime** | llama.cpp / Ollama               |
-| **Doc Parsing** | pymupdf, unstructured            |
-| **Packaging**   | PyInstaller + AppImageKit        |
-| **Monitoring**  | (Optional) Prometheus + Grafana  |
+| Component       | Tool / Model                         |
+| --------------- | ------------------------------------ |
+| **UI**          | PySide6 (Qt for Python)              |
+| **Backend**     | FastAPI (local server)               |
+| **Embeddings**  | BGE-small, MiniLM, Instructor-XL     |
+| **Vector DB**   | Qdrant (embedded) / Chroma           |
+| **LLM Runtime** | llama.cpp / Ollama                   |
+| **Doc Parsing** | pymupdf, unstructured                |
+| **DB**          | SQLite (project & document metadata) |
+| **Packaging**   | PyInstaller + AppImageKit            |
+| **Monitoring**  | (Optional) Prometheus + Grafana      |
+
+---
+
+## 💡 TL;DR
+
+LiteRAG = **Local RAG + Personal Library, done right**.
+
+* Users can **create, expand, and delete projects** with drag & drop.
+* Each project has its own **documents, embeddings, and metadata**.
+* Fully offline, fast, and lightweight.
+* For developers: **full CLI control**.
+* For everyone: **instant, offline document QA across multiple projects**.
 
 ---
 
@@ -127,13 +169,3 @@ python backend/rag_pipeline.py all --file mydoc.pdf --chunk-size 512 --model-key
 
 ---
 
-## 💡 TL;DR
-
-LiteRAG = **Local RAG, done right**.
-Built first for **me**, to be my **own daily driver**, and now released so others can enjoy a truly **offline, private, production-ready RAG**.
-
-* For developers: **full CLI control**.
-* For end users: **one-click, offline document QA**.
-* For everyone: **fast, free, and private**.
-
----
